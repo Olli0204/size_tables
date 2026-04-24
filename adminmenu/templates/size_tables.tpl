@@ -228,18 +228,11 @@ var __inhaltData = {json_encode($itemInhalt)};
     });
 
     // Restore existing table on page load
-    var raw = (typeof __inhaltData !== 'undefined') ? __inhaltData : '';
-    if (raw) {
-        try {
-            var data = JSON.parse(raw);
-            if (data.headers && data.rows) {
-                rowsInput.value = data.rows.length;
-                colsInput.value = data.headers.length;
-                buildTable(data.rows.length, data.headers.length, data);
-            }
-        } catch (e) {
-            emptyNotice.style.display = 'block';
-        }
+    var data = (typeof __inhaltData !== 'undefined') ? __inhaltData : null;
+    if (data && data.headers && data.rows) {
+        rowsInput.value = data.rows.length;
+        colsInput.value = data.headers.length;
+        buildTable(data.rows.length, data.headers.length, data);
     } else {
         emptyNotice.style.display = 'block';
     }
