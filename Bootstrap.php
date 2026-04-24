@@ -24,21 +24,50 @@ class Bootstrap extends Bootstrapper
 
     public function onArtikelPage(array $args): void
     {
-        $smarty   = Shop::Smarty();
-        $artikel  = $smarty->getTemplateVars('Artikel');
+        $smarty  = Shop::Smarty();
+        $artikel = $smarty->getTemplateVars('Artikel');
 
-        // Temporary: always load table with ID=1 for design testing
-        $row  = $this->getDB()->select('size_tables_data', 'id', 1);
-        $data = $row ? \json_decode($row->inhalt ?? '', true) : null;
+        $smarty->assign('showSizeBtnShoes',    false);
+        $smarty->assign('showSizeBtnBindings', false);
+        $smarty->assign('sizeTablesBoots',     []);
+        $smarty->assign('sizeTablesBindungen', []);
 
-        $table = ($data && isset($data['headers'], $data['rows']))
-            ? [['typ' => $row->typ, 'geschlecht' => $row->geschlecht, 'headers' => $data['headers'], 'rows' => $data['rows']]]
-            : [];
+        if ($artikel === null || empty($artikel->cHersteller)) {
+            return;
+        }
 
-        $smarty->assign('sizeTablesBoots',  $table);
-        $smarty->assign('sizeTablesHerren', []);
-        $smarty->assign('sizeTablesDamen',  []);
-        $smarty->assign('sizeTablesKinder', []);
+        $config        = $this->getPlugin()->getConfig();
+        $shoeGroups    = \array_map('intval', (array)($config->getValue('size_tables_values') ?: []));
+        $bindingGroups = \array_map('intval', (array)($config->getValue('size_tables_values_bindings') ?: []));
+        $kWarengruppe  = (int)($artikel->kWarengruppe ?? 0);
+
+        $rows     = $this->getDB()->selectAll('size_tables_data', 'hersteller', $artikel->cHersteller);
+        $boots    = [];
+        $bindings = [];
+
+        foreach ($rows as $row) {
+            $data = \json_decode($row->inhalt ?? '', true);
+            if (!\is_array($data) || !isset($data['headers'], $data['rows'])) {
+                continue;
+            }
+            $table = [
+                'name'       => $row->name,
+                'typ'        => $row->typ,
+                'geschlecht' => $row->geschlecht,
+                'headers'    => $data['headers'],
+                'rows'       => $data['rows'],
+            ];
+            if ($row->typ === 'boot') {
+                $boots[] = $table;
+            } elseif ($row->typ === 'bindung') {
+                $bindings[] = $table;
+            }
+        }
+
+        $smarty->assign('showSizeBtnShoes',    !empty($boots)    && \in_array($kWarengruppe, $shoeGroups, true));
+        $smarty->assign('showSizeBtnBindings', !empty($bindings) && \in_array($kWarengruppe, $bindingGroups, true));
+        $smarty->assign('sizeTablesBoots',     $boots);
+        $smarty->assign('sizeTablesBindungen', $bindings);
     }
 
     public function prepareFrontend(LinkInterface $link, JTLSmarty $smarty): bool

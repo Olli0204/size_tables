@@ -33,6 +33,28 @@
                     <Description>Mit dieser Einstellung schalten sie den Text im Button ein.</Description>
                     <ValueName>size_tables_name_active</ValueName>
                 </Setting>
+                <Setting type="selectbox" initialValue="1" sort="4" conf="Y" multiple="Y">
+                    <Name>Warengruppen für Schuhe</Name>
+                    <Description>Warengruppen, bei denen die Schuh-Größentabelle angezeigt wird.</Description>
+                    <ValueName>size_tables_values</ValueName>
+                    <OptionsSource>
+                        <File>warengruppen.php</File>
+                    </OptionsSource>
+                    <SelectboxOptions>
+                        <Option value="0" sort="1">Leider fehlgeschlagen</Option>
+                    </SelectboxOptions>
+                </Setting>
+                <Setting type="selectbox" initialValue="1" sort="5" conf="Y" multiple="Y">
+                    <Name>Warengruppen für Bindungen</Name>
+                    <Description>Warengruppen, bei denen die Bindungs-Größentabelle angezeigt wird.</Description>
+                    <ValueName>size_tables_values_bindings</ValueName>
+                    <OptionsSource>
+                        <File>warengruppen.php</File>
+                    </OptionsSource>
+                    <SelectboxOptions>
+                        <Option value="0" sort="1">Leider fehlgeschlagen</Option>
+                    </SelectboxOptions>
+                </Setting>
             </Settingslink>
             
         </Adminmenu>

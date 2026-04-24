@@ -105,31 +105,13 @@
     }
     </style>
 
-{assign var="isMatchFound" value=false}
-{assign var="isMatchFoundBindings" value=false}
-
 {assign var='mobile' value=false}
 
 {if $oPlugin_size_tables->getConfig()->getValue('size_tables_mobile_active') !== 'on' && $isMobile}
       {assign var='mobile' value=true}
 {/if}
 
-{foreach from=$oPlugin_size_tables->getConfig()->getValue('size_tables_values') item=sizeValue}
-  {if $sizeValue == $Artikel->kWarengruppe}
-      {assign var="isMatchFound" value=true}
-      {break}
-  {/if}
-{/foreach}
-
-{foreach from=$oPlugin_size_tables->getConfig()->getValue('size_tables_values_bindings') item=sizeValue}
-  {if $sizeValue == $Artikel->kWarengruppe}
-      {assign var="isMatchFoundBindings" value=true}
-      {break}
-  {/if}
-{/foreach}
-
-
- {if $oPlugin_size_tables->getConfig()->getValue('size_tables_active') === 'on' && $mobile === false}
+{if $oPlugin_size_tables->getConfig()->getValue('size_tables_active') === 'on' && $mobile === false && $showSizeBtnShoes}
 
     <button type="button" id="sizeBtnShoes" class="gclassolli" {if $oPlugin_size_tables->getConfig()->getValue('size_tables_name_active') === 'on'}style="display: inline-flex; justify-content: center; align-items: center;"{/if}><i class="fas fa-ruler-horizontal fa-lg"></i>
     {if $oPlugin_size_tables->getConfig()->getValue('size_tables_name_active') === 'on'}
@@ -178,7 +160,7 @@
 {/if}
 
 
-{if $oPlugin_size_tables->getConfig()->getValue('size_tables_active') === 'on' && $isMatchFoundBindings === true && $mobile === false}
+{if $oPlugin_size_tables->getConfig()->getValue('size_tables_active') === 'on' && $mobile === false && $showSizeBtnBindings}
 
   <button type="button" id="sizeBtnBindings" class="gclassolli" {if $oPlugin_size_tables->getConfig()->getValue('size_tables_name_active') === 'on'}style="display: inline-flex; justify-content: center; align-items: center;"{/if}><i class="fas fa-ruler-horizontal fa-lg"></i>
   {if $oPlugin_size_tables->getConfig()->getValue('size_tables_name_active') === 'on'}
@@ -196,34 +178,18 @@
               <h2 class="modal-header">{$oPlugin_size_tables->getLocalization()->getTranslation('size_heading')} {$Artikel->cHersteller}</h2>
               <div class="testcontainer">
 
-              {if $Artikel->kWarengruppe == $oPlugin_size_tables->getConfig()->getValue('size_tables_values_bindings_men')}
-                {foreach from=$sizeTablesHerren item=sizeTable}
-                <table class="size-table-style-binding">
-                    <thead><tr class="size-table-first-row-binding">
-                        {foreach from=$sizeTable.headers item=h}<th>{$h|escape:'html'}</th>{/foreach}
-                    </tr></thead>
-                    <tbody>
-                        {foreach from=$sizeTable.rows item=row}
-                        <tr>{foreach from=$row item=cell}<td>{$cell|escape:'html'}</td>{/foreach}</tr>
-                        {/foreach}
-                    </tbody>
-                </table>
-                {/foreach}
-              {/if}
-              {if $Artikel->kWarengruppe == $oPlugin_size_tables->getConfig()->getValue('size_tables_values_bindings_women')}
-                {foreach from=$sizeTablesDamen item=sizeTable}
-                <table class="size-table-style-binding">
-                    <thead><tr class="size-table-first-row-binding">
-                        {foreach from=$sizeTable.headers item=h}<th>{$h|escape:'html'}</th>{/foreach}
-                    </tr></thead>
-                    <tbody>
-                        {foreach from=$sizeTable.rows item=row}
-                        <tr>{foreach from=$row item=cell}<td>{$cell|escape:'html'}</td>{/foreach}</tr>
-                        {/foreach}
-                    </tbody>
-                </table>
-                {/foreach}
-              {/if}
+              {foreach from=$sizeTablesBindungen item=sizeTable}
+              <table class="size-table-style-binding">
+                  <thead><tr class="size-table-first-row-binding">
+                      {foreach from=$sizeTable.headers item=h}<th>{$h|escape:'html'}</th>{/foreach}
+                  </tr></thead>
+                  <tbody>
+                      {foreach from=$sizeTable.rows item=row}
+                      <tr>{foreach from=$row item=cell}<td>{$cell|escape:'html'}</td>{/foreach}</tr>
+                      {/foreach}
+                  </tbody>
+              </table>
+              {/foreach}
 
               </div>
               <br>
