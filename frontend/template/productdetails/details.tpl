@@ -63,7 +63,7 @@
     
     .close-the-modal {
       display: flex;
-      justify-content: right;
+      justify-content: flex-end;
     }
 
     .size-table-style td{
@@ -83,7 +83,7 @@
     }
 
     .size-table-first-row{
-      background-color: #ffa44fb5
+      background-color: #ffa44fb5;
     }
     .size-table-first-row th{
       padding: 4px;
@@ -91,7 +91,7 @@
     }
 
     .size-table-first-row-binding{
-      background-color: #ffa44fb5
+      background-color: #ffa44fb5;
     }
     .size-table-first-row-binding th{
       padding: 15px;
@@ -340,7 +340,7 @@
 
 {assign var='mobile' value=false}
 
-{if $oPlugin_size_tables->getConfig()->getValue('size_tables_mobile_active') === '' && $isMobile}
+{if $oPlugin_size_tables->getConfig()->getValue('size_tables_mobile_active') !== 'on' && $isMobile}
       {assign var='mobile' value=true}
 {/if}
 
@@ -363,14 +363,14 @@
 
  {if $oPlugin_size_tables->getConfig()->getValue('size_tables_active') === 'on' && $isMatchFound === true && $mobile === false}
 
-    <button type="button" id="sizeBtn" class="gclassolli" {if $oPlugin_size_tables->getConfig()->getValue('size_tables_name_active') === 'on'}style="display: inline-flex; justify-content: center; align-items: center;"{/if}><i class="fas fa-ruler-horizontal fa-lg"></i>
+    <button type="button" id="sizeBtnShoes" class="gclassolli" {if $oPlugin_size_tables->getConfig()->getValue('size_tables_name_active') === 'on'}style="display: inline-flex; justify-content: center; align-items: center;"{/if}><i class="fas fa-ruler-horizontal fa-lg"></i>
     {if $oPlugin_size_tables->getConfig()->getValue('size_tables_name_active') === 'on'}
       <span style='font-family: "Open Sans", sans-serif; font-size: 0.875rem; padding-bottom: auto; padding-top: auto; margin-left: 5px;'>
         {$oPlugin_size_tables->getLocalization()->getTranslation('size_heading')}
       </span>
     {/if}
-    </i></button>
-    <div id='sizeModal' class='modalpopup'>
+    </button>
+    <div id='sizeModalShoes' class='modalpopup'>
         <div class='modal-content'>
             <div class="close-the-modal">
                 <span class="close-btn">&times;</span>
@@ -418,31 +418,14 @@
 
 
     <script>
-    // Get the modal
-    var modal = document.getElementById("sizeModal");
-
-    // Get the button that opens the modal
-    var btn = document.getElementById("sizeBtn");
-
-    // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close-btn")[0];
-
-    // When the user clicks the button, open the modal 
-    btn.onclick = function() {
-    modal.style.display = "block";
-    }
-
-    // When the user clicks on <span> (x), close the modal
-    span.onclick = function() {
-    modal.style.display = "none";
-    }
-
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-    }
+    var sizeModalShoes = document.getElementById('sizeModalShoes');
+    var sizeBtnShoes = document.getElementById('sizeBtnShoes');
+    var sizeCloseShoes = sizeModalShoes.querySelector('.close-btn');
+    sizeBtnShoes.addEventListener('click', function() { sizeModalShoes.style.display = 'block'; });
+    sizeCloseShoes.addEventListener('click', function() { sizeModalShoes.style.display = 'none'; });
+    window.addEventListener('click', function(event) {
+        if (event.target === sizeModalShoes) { sizeModalShoes.style.display = 'none'; }
+    });
     </script>
 
 {/if}
@@ -450,14 +433,14 @@
 
 {if $oPlugin_size_tables->getConfig()->getValue('size_tables_active') === 'on' && $isMatchFoundBindings === true && $mobile === false}
 
-  <button type="button" id="sizeBtn" class="gclassolli" {if $oPlugin_size_tables->getConfig()->getValue('size_tables_name_active') === 'on'}style="display: inline-flex; justify-content: center; align-items: center;"{/if}><i class="fas fa-ruler-horizontal fa-lg"></i>
+  <button type="button" id="sizeBtnBindings" class="gclassolli" {if $oPlugin_size_tables->getConfig()->getValue('size_tables_name_active') === 'on'}style="display: inline-flex; justify-content: center; align-items: center;"{/if}><i class="fas fa-ruler-horizontal fa-lg"></i>
   {if $oPlugin_size_tables->getConfig()->getValue('size_tables_name_active') === 'on'}
     <span style='font-family: "Open Sans", sans-serif; font-size: 0.875rem; padding-bottom: auto; padding-top: auto; margin-left: 5px;'>
       {$oPlugin_size_tables->getLocalization()->getTranslation('size_heading')}
     </span>
   {/if}
-  </i></button>
-  <div id='sizeModal' class='modalpopup'>
+  </button>
+  <div id='sizeModalBindings' class='modalpopup'>
       <div class='modal-content'>
           <div class="close-the-modal">
               <span class="close-btn">&times;</span>
@@ -554,31 +537,14 @@
 
 
   <script>
-    // Get the modal
-    var modal = document.getElementById("sizeModal");
-
-    // Get the button that opens the modal
-    var btn = document.getElementById("sizeBtn");
-
-    // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close-btn")[0];
-
-    // When the user clicks the button, open the modal 
-    btn.onclick = function() {
-    modal.style.display = "block";
-    }
-
-    // When the user clicks on <span> (x), close the modal
-    span.onclick = function() {
-    modal.style.display = "none";
-    }
-
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-    }
+    var sizeModalBindings = document.getElementById('sizeModalBindings');
+    var sizeBtnBindings = document.getElementById('sizeBtnBindings');
+    var sizeCloseBindings = sizeModalBindings.querySelector('.close-btn');
+    sizeBtnBindings.addEventListener('click', function() { sizeModalBindings.style.display = 'block'; });
+    sizeCloseBindings.addEventListener('click', function() { sizeModalBindings.style.display = 'none'; });
+    window.addEventListener('click', function(event) {
+        if (event.target === sizeModalBindings) { sizeModalBindings.style.display = 'none'; }
+    });
   </script>
 
 {/if}
