@@ -3,6 +3,7 @@
 namespace Plugin\size_tables;
 
 use JTL\Helpers\Request;
+use JTL\Model\DataModelInterface;
 use JTL\Plugin\PluginInterface;
 use JTL\Router\Controller\Backend\GenericModelController;
 use JTL\Shop;
@@ -16,6 +17,17 @@ class ModelBackendController extends GenericModelController
     public int $menuID = 0;
 
     public PluginInterface $plugin;
+
+    public function updateFromPost(DataModelInterface $model, array $post): bool
+    {
+        // filterXSS strips all double-quotes, destroying JSON stored in inhalt.
+        // Re-inject the raw POST value so the JSON is saved intact.
+        if (isset($_POST['inhalt'])) {
+            $post['inhalt'] = $_POST['inhalt'];
+        }
+
+        return parent::updateFromPost($model, $post);
+    }
 
     public function getResponse(ServerRequestInterface $request, array $args, JTLSmarty $smarty): ResponseInterface
     {
