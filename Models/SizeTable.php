@@ -5,6 +5,8 @@ namespace Plugin\size_tables\Models;
 use Exception;
 use JTL\Model\DataAttribute;
 use JTL\Model\DataModel;
+use JTL\Model\InputConfig;
+use JTL\Plugin\Admin\InputType;
 
 /**
  * @property int    $id
@@ -46,15 +48,30 @@ final class SizeTable extends DataModel
         }
 
         $id = DataAttribute::create('id', 'int', null, false, true);
-        $id->getInputConfig()->setModifyable(false);
+        $id->getInputConfig()->setHidden(true);
+
+        $typ = DataAttribute::create('typ', 'varchar', null, false);
+        $typConfig = new InputConfig();
+        $typConfig->setInputType(InputType::SELECT);
+        $typConfig->setAllowedValues(['bindung' => 'Bindung', 'boot' => 'Boot']);
+        $typ->setInputConfig($typConfig);
+
+        $geschlecht = DataAttribute::create('geschlecht', 'varchar', null, false);
+        $geschlechtConfig = new InputConfig();
+        $geschlechtConfig->setInputType(InputType::SELECT);
+        $geschlechtConfig->setAllowedValues(['herren' => 'Herren', 'damen' => 'Damen', 'kinder' => 'Kinder']);
+        $geschlecht->setInputConfig($geschlechtConfig);
+
+        $inhalt = DataAttribute::create('inhalt', 'text', null, false);
+        $inhalt->getInputConfig()->setInputType(InputType::TEXTAREA);
 
         $attributes = [
-            'id'          => $id,
-            'name'        => DataAttribute::create('name', 'varchar', null, false),
-            'hersteller'  => DataAttribute::create('hersteller', 'varchar', null, false),
-            'typ'         => DataAttribute::create('typ', 'varchar', null, false),
-            'geschlecht'  => DataAttribute::create('geschlecht', 'varchar', null, false),
-            'inhalt'      => DataAttribute::create('inhalt', 'text', null, false),
+            'id'         => $id,
+            'name'       => DataAttribute::create('name', 'varchar', null, false),
+            'hersteller' => DataAttribute::create('hersteller', 'varchar', null, false),
+            'typ'        => $typ,
+            'geschlecht' => $geschlecht,
+            'inhalt'     => $inhalt,
         ];
 
         return $attributes;
