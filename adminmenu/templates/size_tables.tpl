@@ -14,6 +14,8 @@
     <form id="model-detail" name="model_detail" method="post" action="{$action}">
         {$jtl_token}
         <input type="hidden" name="id" value="{$item->getId()|intval}" />
+        <input type="hidden" id="inhalt" name="inhalt" value="{$item->getInhalt()|escape:'html'}" />
+
         <div class="card">
             <div class="card-header">
                 <div class="subheading1">Größentabelle</div>
@@ -58,30 +60,56 @@
                     </div>
                 </div>
 
+                <hr>
+
                 <div class="form-group form-row align-items-center">
-                    <label class="col col-sm-4 col-form-label text-sm-right" for="inhalt">Inhalt:</label>
+                    <label class="col col-sm-4 col-form-label text-sm-right">Tabellengröße:</label>
                     <div class="col-sm pl-sm-3 pr-sm-5 order-last order-sm-2">
-                        <textarea class="form-control" id="inhalt" name="inhalt"
-                                  rows="12" required>{$item->getInhalt()|default:''}</textarea>
+                        <div class="d-flex align-items-center flex-wrap" style="gap: 8px;">
+                            <input type="number" id="table-rows" class="form-control"
+                                   min="1" max="30" value="4" style="width: 75px;" placeholder="Zeilen">
+                            <span class="px-1">Zeilen &times;</span>
+                            <input type="number" id="table-cols" class="form-control"
+                                   min="1" max="50" value="5" style="width: 75px;" placeholder="Spalten">
+                            <span class="px-1">Spalten</span>
+                            <button type="button" id="generate-table" class="btn btn-secondary">
+                                <i class="fas fa-table"></i> Tabelle erstellen
+                            </button>
+                        </div>
+                        <small class="text-muted mt-1 d-block">Zeile 1 wird automatisch als Kopfzeile verwendet.</small>
+                    </div>
+                </div>
+
+                <div class="form-group form-row">
+                    <div class="col-sm-4"></div>
+                    <div class="col-sm pl-sm-3 pr-sm-5 order-last order-sm-2">
+                        <div id="table-builder-container" class="table-responsive"></div>
+                        <p id="table-builder-empty" class="text-muted" style="display:none;">
+                            Noch keine Tabelle erstellt. Größe eingeben und „Tabelle erstellen" klicken.
+                        </p>
                     </div>
                 </div>
 
             </div>
         </div>
+
         <div class="card-footer save-wrapper">
             <div class="row first-ml-auto">
                 <div class="col-sm-6 col-xl-auto">
-                    <button type="submit" name="go-back" value="1" class="btn btn-outline-primary btn-block">
+                    <button type="submit" name="go-back" value="1"
+                            class="btn btn-outline-primary btn-block" formnovalidate>
                         {__('cancelWithIcon')}
                     </button>
                 </div>
                 <div class="col-sm-6 col-xl-auto">
-                    <button type="submit" name="save-model-continue" value="1" class="btn btn-outline-primary btn-block">
+                    <button type="submit" name="save-model-continue" value="1"
+                            class="btn btn-outline-primary btn-block" id="save-and-continue">
                         <i class="fal fa-save"></i> {__('saveAndContinue')}
                     </button>
                 </div>
                 <div class="col-sm-6 col-xl-auto">
-                    <button type="submit" name="save-model" value="1" class="btn btn-primary btn-block">
+                    <button type="submit" name="save-model" value="1"
+                            class="btn btn-primary btn-block">
                         <i class="far fa-save"></i> {__('save')}
                     </button>
                 </div>
@@ -89,4 +117,131 @@
         </div>
     </form>
 </div>
+
+<style>
+#table-builder-container table { border-collapse: collapse; }
+#table-builder-container thead tr { background-color: #ffa54f; }
+#table-builder-container th,
+#table-builder-container td { padding: 3px; }
+#table-builder-container input.cell-input {
+    min-width: 70px;
+    width: 100%;
+    border: 1px solid #ced4da;
+    border-radius: 3px;
+    padding: 2px 4px;
+    font-size: 0.85rem;
+}
+</style>
+
+<script>
+(function () {
+    var inhaltField   = document.getElementById('inhalt');
+    var rowsInput     = document.getElementById('table-rows');
+    var colsInput     = document.getElementById('table-cols');
+    var generateBtn   = document.getElementById('generate-table');
+    var container     = document.getElementById('table-builder-container');
+    var emptyNotice   = document.getElementById('table-builder-empty');
+
+    function buildTable(numRows, numCols, existing) {
+        container.innerHTML = '';
+
+        var table  = document.createElement('table');
+        table.className = 'table table-bordered table-sm';
+
+        // Header row
+        var thead = table.createTHead();
+        var hRow  = thead.insertRow();
+        for (var c = 0; c < numCols; c++) {
+            var th    = document.createElement('th');
+            var input = document.createElement('input');
+            input.type = 'text';
+            input.className = 'cell-input';
+            input.dataset.row = 'h';
+            input.dataset.col = c;
+            input.value = (existing && existing.headers && existing.headers[c] !== undefined)
+                ? existing.headers[c] : '';
+            input.placeholder = 'Spalte ' + (c + 1);
+            th.appendChild(input);
+            hRow.appendChild(th);
+        }
+
+        // Data rows (numRows = data rows only, row 0 is header)
+        var tbody = table.createTBody();
+        for (var r = 0; r < numRows; r++) {
+            var tr = tbody.insertRow();
+            for (var c = 0; c < numCols; c++) {
+                var td    = tr.insertCell();
+                var input = document.createElement('input');
+                input.type = 'text';
+                input.className = 'cell-input';
+                input.dataset.row = r;
+                input.dataset.col = c;
+                input.value = (existing && existing.rows && existing.rows[r] && existing.rows[r][c] !== undefined)
+                    ? existing.rows[r][c] : '';
+                td.appendChild(input);
+            }
+        }
+
+        container.appendChild(table);
+        emptyNotice.style.display = 'none';
+    }
+
+    function serializeTable() {
+        var headers = [];
+        var rows    = [];
+
+        container.querySelectorAll('[data-row="h"]').forEach(function (inp) {
+            headers[parseInt(inp.dataset.col)] = inp.value;
+        });
+
+        var maxRow = -1;
+        container.querySelectorAll('[data-row]').forEach(function (inp) {
+            if (inp.dataset.row !== 'h') {
+                maxRow = Math.max(maxRow, parseInt(inp.dataset.row));
+            }
+        });
+
+        for (var r = 0; r <= maxRow; r++) {
+            var row = [];
+            container.querySelectorAll('[data-row="' + r + '"]').forEach(function (inp) {
+                row[parseInt(inp.dataset.col)] = inp.value;
+            });
+            rows.push(row);
+        }
+
+        return JSON.stringify({ headers: headers, rows: rows });
+    }
+
+    // Generate button
+    generateBtn.addEventListener('click', function () {
+        var rows = Math.max(1, parseInt(rowsInput.value) || 1);
+        var cols = Math.max(1, parseInt(colsInput.value) || 1);
+        buildTable(rows, cols, null);
+    });
+
+    // Serialize on save (not on go-back)
+    document.getElementById('model-detail').addEventListener('submit', function () {
+        if (container.querySelector('table')) {
+            inhaltField.value = serializeTable();
+        }
+    });
+
+    // Restore existing table on page load
+    var raw = inhaltField.value;
+    if (raw) {
+        try {
+            var data = JSON.parse(raw);
+            if (data.headers && data.rows) {
+                rowsInput.value = data.rows.length;
+                colsInput.value = data.headers.length;
+                buildTable(data.rows.length, data.headers.length, data);
+            }
+        } catch (e) {
+            emptyNotice.style.display = 'block';
+        }
+    } else {
+        emptyNotice.style.display = 'block';
+    }
+}());
+</script>
 {/if}
