@@ -10,6 +10,8 @@ use JTL\Link\LinkInterface;
 use JTL\Plugin\Bootstrapper;
 use JTL\Shop;
 use JTL\Smarty\JTLSmarty;
+use Laminas\Diactoros\ServerRequestFactory;
+use function Functional\first;
 
 class Bootstrap extends Bootstrapper
 {
@@ -33,27 +35,40 @@ class Bootstrap extends Bootstrapper
         $smarty->assign('menuID', $menuID)
                ->assign('posted', null);
 
+        if ($tabName === 'Größentabellen') {
+            return $this->renderModelTab($menuID, $smarty);
+        }
+
         $template = 'newtab.tpl';
 
-        if ($tabName === 'Ein Neuer Tab') {
-            $alert = Shop::Container()->getAlertService();
-            if (Request::postInt('clear-cache') === 1) {
-                if (Form::validateToken()) {
-                    $result = $this->getCache()->flushTags($plugin->getCache()->getGroup());
-                    if (\is_numeric($result)) {
-                        $alert->addAlert(Alert::TYPE_SUCCESS, \__('Cache successfully flushed.'), 'succCacheFlush');
-                    } else {
-                        $alert->addAlert(Alert::TYPE_ERROR, \__('Could not flush cache!'), 'failedCacheFlush');
-                    }
-                } else {
-                    $alert->addAlert(Alert::TYPE_ERROR, \__('CSRF error!'), 'failedCsrfCheck');
-                }
-            }
-        } elseif ($tabName === 'Synchronisieren') {
+        if ($tabName === 'Synchronisieren') {
             $template = 'tab2.tpl';
         }
 
         return $smarty->assign('backendURL', $backendURL)
-            ->fetch($this->getPlugin()->getPaths()->getAdminPath() . '/templates/' . $template);
+            ->fetch($plugin->getPaths()->getAdminPath() . '/templates/' . $template);
+    }
+
+    private function renderModelTab(int $menuID, JTLSmarty $smarty): string
+    {
+        $controller         = new ModelBackendController(
+            $this->getDB(),
+            $this->getCache(),
+            Shop::Container()->getAlertService(),
+            Shop::Container()->getAdminAccount(),
+            Shop::Container()->getGetText()
+        );
+        $controller->menuID = $menuID;
+        $controller->plugin = $this->getPlugin();
+
+        $request  = ServerRequestFactory::fromGlobals($_SERVER, $_GET, $_POST, $_COOKIE, $_FILES);
+        $response = $controller->getResponse($request, [], $smarty);
+
+        if (\count($response->getHeader('location')) > 0) {
+            \header('Location:' . first($response->getHeader('location')));
+            exit();
+        }
+
+        return (string)$response->getBody();
     }
 }

@@ -13,7 +13,7 @@
     <Install>
         <Adminmenu>
             <Customlink sort="10">
-                <Name>Ein Neuer Tab</Name>
+                <Name>Größentabellen</Name>
             </Customlink>
             <Customlink sort="11">
                 <Name>Synchronisieren</Name>
