@@ -27,35 +27,18 @@ class Bootstrap extends Bootstrapper
         $smarty   = Shop::Smarty();
         $artikel  = $smarty->getTemplateVars('Artikel');
 
-        $empty = ['sizeTablesBoots' => [], 'sizeTablesHerren' => [], 'sizeTablesDamen' => [], 'sizeTablesKinder' => []];
+        // Temporary: always load table with ID=1 for design testing
+        $row  = $this->getDB()->select('size_tables_data', 'id', 1);
+        $data = $row ? \json_decode($row->inhalt ?? '', true) : null;
 
-        if ($artikel === null || empty($artikel->cHersteller)) {
-            foreach ($empty as $key => $val) {
-                $smarty->assign($key, $val);
-            }
-            return;
-        }
+        $table = ($data && isset($data['headers'], $data['rows']))
+            ? [['typ' => $row->typ, 'geschlecht' => $row->geschlecht, 'headers' => $data['headers'], 'rows' => $data['rows']]]
+            : [];
 
-        $rows   = $this->getDB()->selectAll('size_tables_data', 'hersteller', $artikel->cHersteller);
-        $tables = [];
-
-        foreach ($rows as $row) {
-            $data = \json_decode($row->inhalt ?? '', true);
-            if (!\is_array($data) || !isset($data['headers'], $data['rows'])) {
-                continue;
-            }
-            $tables[] = [
-                'typ'        => $row->typ,
-                'geschlecht' => $row->geschlecht,
-                'headers'    => $data['headers'],
-                'rows'       => $data['rows'],
-            ];
-        }
-
-        $smarty->assign('sizeTablesBoots',  \array_values(\array_filter($tables, static fn($t) => $t['typ'] === 'boot')));
-        $smarty->assign('sizeTablesHerren', \array_values(\array_filter($tables, static fn($t) => $t['typ'] === 'bindung' && $t['geschlecht'] === 'herren')));
-        $smarty->assign('sizeTablesDamen',  \array_values(\array_filter($tables, static fn($t) => $t['typ'] === 'bindung' && $t['geschlecht'] === 'damen')));
-        $smarty->assign('sizeTablesKinder', \array_values(\array_filter($tables, static fn($t) => $t['typ'] === 'bindung' && $t['geschlecht'] === 'kinder')));
+        $smarty->assign('sizeTablesBoots',  $table);
+        $smarty->assign('sizeTablesHerren', []);
+        $smarty->assign('sizeTablesDamen',  []);
+        $smarty->assign('sizeTablesKinder', []);
     }
 
     public function prepareFrontend(LinkInterface $link, JTLSmarty $smarty): bool

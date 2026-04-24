@@ -129,7 +129,7 @@
 {/foreach}
 
 
- {if $oPlugin_size_tables->getConfig()->getValue('size_tables_active') === 'on' && $isMatchFound === true && $mobile === false}
+ {if $oPlugin_size_tables->getConfig()->getValue('size_tables_active') === 'on' && $mobile === false}
 
     <button type="button" id="sizeBtnShoes" class="gclassolli" {if $oPlugin_size_tables->getConfig()->getValue('size_tables_name_active') === 'on'}style="display: inline-flex; justify-content: center; align-items: center;"{/if}><i class="fas fa-ruler-horizontal fa-lg"></i>
     {if $oPlugin_size_tables->getConfig()->getValue('size_tables_name_active') === 'on'}
