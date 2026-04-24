@@ -65,10 +65,16 @@ final class SizeTable extends DataModel
         $inhalt = DataAttribute::create('inhalt', 'text', null, false);
         $inhalt->getInputConfig()->setInputType(InputType::TEXTAREA);
 
+        $hersteller = DataAttribute::create('hersteller', 'varchar', null, false);
+        $hersteller->getInputConfig()->setHidden(true);
+
+        $geschlecht->getInputConfig()->setHidden(true);
+        $inhalt->getInputConfig()->setHidden(true);
+
         $attributes = [
             'id'         => $id,
             'name'       => DataAttribute::create('name', 'varchar', null, false),
-            'hersteller' => DataAttribute::create('hersteller', 'varchar', null, false),
+            'hersteller' => $hersteller,
             'typ'        => $typ,
             'geschlecht' => $geschlecht,
             'inhalt'     => $inhalt,
