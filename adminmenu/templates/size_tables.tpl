@@ -8,6 +8,9 @@
         edit=true
         search=true
         delete=true}
+    <style>
+    #modelform table tbody td:nth-child(3) { text-transform: capitalize; }
+    </style>
 
 {elseif $step === 'detail'}
 <div id="detail-wrapper">
