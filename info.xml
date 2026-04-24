@@ -12,14 +12,11 @@
     <CreateDate>2024-02-27</CreateDate>
     <Install>
         <Adminmenu>
-            <Customlink sort="10">
+            <Customlink sort="1">
                 <Name>Größentabellen</Name>
             </Customlink>
-            <Customlink sort="11">
-                <Name>Synchronisieren</Name>
-            </Customlink>
-            
-            <Settingslink sort="3">
+
+            <Settingslink sort="2">
                 <Name>Einstellungen</Name>
                 <Setting type="text" initialValue="" sort="0" conf="N">
                     <Name>Allgemein</Name>

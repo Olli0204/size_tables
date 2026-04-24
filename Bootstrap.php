@@ -77,14 +77,8 @@ class Bootstrap extends Bootstrapper
             return $this->renderModelTab($menuID, $smarty);
         }
 
-        $template = 'newtab.tpl';
-
-        if ($tabName === 'Synchronisieren') {
-            $template = 'tab2.tpl';
-        }
-
         return $smarty->assign('backendURL', $backendURL)
-            ->fetch($plugin->getPaths()->getAdminPath() . '/templates/' . $template);
+            ->fetch($plugin->getPaths()->getAdminPath() . '/templates/newtab.tpl');
     }
 
     private function renderModelTab(int $menuID, JTLSmarty $smarty): string
