@@ -18,11 +18,6 @@
 
             <Settingslink sort="2">
                 <Name>Einstellungen</Name>
-                <Setting type="text" initialValue="" sort="0" conf="N">
-                    <Name>Allgemein</Name>
-                    <Description>Allgemeine Einstellungen des Plugins</Description>
-                    <ValueName>Spacer</ValueName>
-                </Setting>
                 <Setting type="checkbox" sort="1" conf="Y">
                     <Name>Plugin Aktiv</Name>
                     <Description>Mit dieser Einstellung schalten sie das Plugin aktiv.</Description>
@@ -33,58 +28,10 @@
                     <Description>Mit dieser Einstellung schalten sie das Plugin für Mobilgeräte aktiv.</Description>
                     <ValueName>size_tables_mobile_active</ValueName>
                 </Setting>
-                <Setting type="selectbox" initialValue="1" sort="3" conf="Y" multiple="Y">
-                    <Name>Warengruppen für Schuhe</Name>
-                    <Description>Wähle die passenden Warengruppen aus.</Description>
-                    <ValueName>size_tables_values</ValueName>
-                    <OptionsSource>
-                        <File>warengruppen.php</File>
-                    </OptionsSource>
-                    <SelectboxOptions>
-                        <Option value="0" sort="1">Leider fehlgeschlagen</Option>
-                    </SelectboxOptions>
-                </Setting>
-                <Setting type="checkbox" sort="4" conf="Y">
+                <Setting type="checkbox" sort="3" conf="Y">
                     <Name>Name auf Button Aktiv</Name>
                     <Description>Mit dieser Einstellung schalten sie den Text im Button ein.</Description>
                     <ValueName>size_tables_name_active</ValueName>
-                </Setting>
-                <Setting type="text" initialValue="" sort="5" conf="N">
-                    <Name>Größentabellen für Bindungen</Name>
-                    <ValueName>Spacer2</ValueName>
-                </Setting>
-                <Setting type="selectbox" initialValue="1" sort="6" conf="Y" multiple="Y">
-                    <Name>Warengruppen für Bindungen</Name>
-                    <Description>Wähle die passenden Warengruppen aus.</Description>
-                    <ValueName>size_tables_values_bindings</ValueName>
-                    <OptionsSource>
-                        <File>warengruppen.php</File>
-                    </OptionsSource>
-                    <SelectboxOptions>
-                        <Option value="0" sort="1">Leider fehlgeschlagen</Option>
-                    </SelectboxOptions>
-                </Setting>
-                <Setting type="selectbox" initialValue="1" sort="7" conf="Y">
-                    <Name>Warengruppe für Bindungen Männer</Name>
-                    <Description>Wähle die passenden Warengruppen aus.</Description>
-                    <ValueName>size_tables_values_bindings_men</ValueName>
-                    <OptionsSource>
-                        <File>warengruppen.php</File>
-                    </OptionsSource>
-                    <SelectboxOptions>
-                        <Option value="0" sort="1">Leider fehlgeschlagen</Option>
-                    </SelectboxOptions>
-                </Setting>
-                <Setting type="selectbox" initialValue="1" sort="8" conf="Y">
-                    <Name>Warengruppe für Bindungen Frauen</Name>
-                    <Description>Wähle die passenden Warengruppen aus.</Description>
-                    <ValueName>size_tables_values_bindings_women</ValueName>
-                    <OptionsSource>
-                        <File>warengruppen.php</File>
-                    </OptionsSource>
-                    <SelectboxOptions>
-                        <Option value="0" sort="1">Leider fehlgeschlagen</Option>
-                    </SelectboxOptions>
                 </Setting>
             </Settingslink>
             
