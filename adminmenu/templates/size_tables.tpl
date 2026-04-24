@@ -15,6 +15,7 @@
         {$jtl_token}
         <input type="hidden" name="id" value="{$item->getId()|intval}" />
         <input type="hidden" id="inhalt" name="inhalt" value="" />
+        <div id="inhalt-data" data-inhalt="{$item->getInhalt()|default:''|escape:'html'}" style="display:none;"></div>
 
         <div class="card">
             <div class="card-header">
@@ -134,7 +135,6 @@
 </style>
 
 <script>
-var __inhaltData = {json_encode($itemInhalt)};
 (function () {
     var inhaltField   = document.getElementById('inhalt');
     var rowsInput     = document.getElementById('table-rows');
@@ -228,11 +228,20 @@ var __inhaltData = {json_encode($itemInhalt)};
     });
 
     // Restore existing table on page load
-    var data = (typeof __inhaltData !== 'undefined') ? __inhaltData : null;
-    if (data && data.headers && data.rows) {
-        rowsInput.value = data.rows.length;
-        colsInput.value = data.headers.length;
-        buildTable(data.rows.length, data.headers.length, data);
+    var raw = document.getElementById('inhalt-data').getAttribute('data-inhalt');
+    if (raw) {
+        try {
+            var data = JSON.parse(raw);
+            if (data.headers && data.rows) {
+                rowsInput.value = data.rows.length;
+                colsInput.value = data.headers.length;
+                buildTable(data.rows.length, data.headers.length, data);
+            } else {
+                emptyNotice.style.display = 'block';
+            }
+        } catch (e) {
+            emptyNotice.style.display = 'block';
+        }
     } else {
         emptyNotice.style.display = 'block';
     }
