@@ -14,7 +14,7 @@
     <form id="model-detail" name="model_detail" method="post" action="{$action}">
         {$jtl_token}
         <input type="hidden" name="id" value="{$item->getId()|intval}" />
-        <input type="hidden" id="inhalt" name="inhalt" value="{$item->getInhalt()|escape:'html'}" />
+        <input type="hidden" id="inhalt" name="inhalt" value="" />
 
         <div class="card">
             <div class="card-header">
@@ -134,6 +134,7 @@
 </style>
 
 <script>
+var __inhaltData = {$itemInhaltJson|nofilter};
 (function () {
     var inhaltField   = document.getElementById('inhalt');
     var rowsInput     = document.getElementById('table-rows');
@@ -227,7 +228,7 @@
     });
 
     // Restore existing table on page load
-    var raw = inhaltField.value;
+    var raw = (typeof __inhaltData !== 'undefined') ? __inhaltData : '';
     if (raw) {
         try {
             var data = JSON.parse(raw);
