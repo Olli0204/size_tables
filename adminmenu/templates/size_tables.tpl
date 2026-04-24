@@ -134,7 +134,7 @@
 </style>
 
 <script>
-var __inhaltData = {$itemInhaltJson|nofilter};
+var __inhaltData = {json_encode($itemInhalt)};
 (function () {
     var inhaltField   = document.getElementById('inhalt');
     var rowsInput     = document.getElementById('table-rows');

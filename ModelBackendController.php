@@ -33,7 +33,7 @@ class ModelBackendController extends GenericModelController
         } else {
             $item = SizeTable::loadByAttributes(['id' => Request::getInt('id')], $this->getDB());
             $smarty->assign('item', $item)
-                   ->assign('itemInhaltJson', \json_encode($item->getInhalt() ?: ''))
+                   ->assign('itemInhalt', $item->getInhalt() ?: '')
                    ->assign('defaultTabbertab', $this->menuID);
         }
 
