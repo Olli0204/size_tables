@@ -8,7 +8,7 @@
     <MinShopVersion>5.2.4</MinShopVersion>
     <MaxShopVersion>5.7.0</MaxShopVersion>
     <PluginID>size_tables</PluginID>
-    <Version>1.2.2</Version>
+    <Version>1.2.3</Version>
     <CreateDate>2024-02-27</CreateDate>
     <Install>
         <Adminmenu>
@@ -18,20 +18,32 @@
 
             <Settingslink sort="2">
                 <Name>Einstellungen</Name>
-                <Setting type="checkbox" sort="1" conf="Y">
+                <Setting type="selectbox" initialValue="N" sort="1" conf="Y">
                     <Name>Plugin Aktiv</Name>
                     <Description>Mit dieser Einstellung schalten sie das Plugin aktiv.</Description>
                     <ValueName>size_tables_active</ValueName>
+                    <SelectboxOptions>
+                        <Option value="Y" sort="0">Ja</Option>
+                        <Option value="N" sort="1">Nein</Option>
+                    </SelectboxOptions>
                 </Setting>
-                <Setting type="checkbox" sort="2" conf="Y">
+                <Setting type="selectbox" initialValue="N" sort="2" conf="Y">
                     <Name>Für Mobile aktiv</Name>
                     <Description>Mit dieser Einstellung schalten sie das Plugin für Mobilgeräte aktiv.</Description>
                     <ValueName>size_tables_mobile_active</ValueName>
+                    <SelectboxOptions>
+                        <Option value="Y" sort="0">Ja</Option>
+                        <Option value="N" sort="1">Nein</Option>
+                    </SelectboxOptions>
                 </Setting>
-                <Setting type="checkbox" sort="3" conf="Y">
+                <Setting type="selectbox" initialValue="N" sort="3" conf="Y">
                     <Name>Name auf Button Aktiv</Name>
                     <Description>Mit dieser Einstellung schalten sie den Text im Button ein.</Description>
                     <ValueName>size_tables_name_active</ValueName>
+                    <SelectboxOptions>
+                        <Option value="Y" sort="0">Ja</Option>
+                        <Option value="N" sort="1">Nein</Option>
+                    </SelectboxOptions>
                 </Setting>
                 <Setting type="selectbox" initialValue="1" sort="4" conf="Y" multiple="Y">
                     <Name>Warengruppen für Schuhe</Name>

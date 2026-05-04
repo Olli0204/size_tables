@@ -107,14 +107,14 @@
 
 {assign var='mobile' value=false}
 
-{if $oPlugin_size_tables->getConfig()->getValue('size_tables_mobile_active') !== 'on' && $isMobile}
+{if $oPlugin_size_tables->getConfig()->getValue('size_tables_mobile_active') !== 'Y' && $isMobile}
       {assign var='mobile' value=true}
 {/if}
 
-{if $oPlugin_size_tables->getConfig()->getValue('size_tables_active') === 'on' && $mobile === false && $showSizeBtnShoes}
+{if $oPlugin_size_tables->getConfig()->getValue('size_tables_active') === 'Y' && $mobile === false && $showSizeBtnShoes}
 
-    <button type="button" id="sizeBtnShoes" class="gclassolli" {if $oPlugin_size_tables->getConfig()->getValue('size_tables_name_active') === 'on'}style="display: inline-flex; justify-content: center; align-items: center;"{/if}><i class="fas fa-ruler-horizontal fa-lg"></i>
-    {if $oPlugin_size_tables->getConfig()->getValue('size_tables_name_active') === 'on'}
+    <button type="button" id="sizeBtnShoes" class="gclassolli" {if $oPlugin_size_tables->getConfig()->getValue('size_tables_name_active') === 'Y'}style="display: inline-flex; justify-content: center; align-items: center;"{/if}><i class="fas fa-ruler-horizontal fa-lg"></i>
+    {if $oPlugin_size_tables->getConfig()->getValue('size_tables_name_active') === 'Y'}
       <span style='font-family: "Open Sans", sans-serif; font-size: 0.875rem; padding-bottom: auto; padding-top: auto; margin-left: 5px;'>
         {$oPlugin_size_tables->getLocalization()->getTranslation('size_heading')}
       </span>
@@ -160,10 +160,10 @@
 {/if}
 
 
-{if $oPlugin_size_tables->getConfig()->getValue('size_tables_active') === 'on' && $mobile === false && $showSizeBtnBindings}
+{if $oPlugin_size_tables->getConfig()->getValue('size_tables_active') === 'Y' && $mobile === false && $showSizeBtnBindings}
 
-  <button type="button" id="sizeBtnBindings" class="gclassolli" {if $oPlugin_size_tables->getConfig()->getValue('size_tables_name_active') === 'on'}style="display: inline-flex; justify-content: center; align-items: center;"{/if}><i class="fas fa-ruler-horizontal fa-lg"></i>
-  {if $oPlugin_size_tables->getConfig()->getValue('size_tables_name_active') === 'on'}
+  <button type="button" id="sizeBtnBindings" class="gclassolli" {if $oPlugin_size_tables->getConfig()->getValue('size_tables_name_active') === 'Y'}style="display: inline-flex; justify-content: center; align-items: center;"{/if}><i class="fas fa-ruler-horizontal fa-lg"></i>
+  {if $oPlugin_size_tables->getConfig()->getValue('size_tables_name_active') === 'Y'}
     <span style='font-family: "Open Sans", sans-serif; font-size: 0.875rem; padding-bottom: auto; padding-top: auto; margin-left: 5px;'>
       {$oPlugin_size_tables->getLocalization()->getTranslation('size_heading')}
     </span>
