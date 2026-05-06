@@ -1,4 +1,13 @@
 {if $step === 'overview'}
+    {if isset($seedResult)}
+    <div class="alert alert-success">
+        <i class="fas fa-check-circle"></i>
+        Demo-Daten geladen: <strong>{$seedResult.schuhe}</strong> Schuh-Tabellen und
+        <strong>{$seedResult.bindungen}</strong> Bindungs-Tabellen eingefügt
+        {if $seedResult.skipped > 0}, <strong>{$seedResult.skipped}</strong> bereits vorhanden (übersprungen){/if}.
+    </div>
+    {/if}
+
     {include file='tpl_inc/model_list.tpl'
         items=$models
         includeHeader=false
@@ -11,6 +20,48 @@
     <style>
     #modelform table tbody td:nth-child(3) { text-transform: capitalize; }
     </style>
+
+    <div class="card mt-4">
+        <div class="card-header">
+            <div class="subheading1"><i class="fas fa-database"></i> Demo-Daten laden</div>
+            <hr class="mb-n3">
+        </div>
+        <div class="card-body">
+            <form method="post" action="{$action}">
+                {$jtl_token}
+                <div class="form-row align-items-end">
+                    <div class="col-sm-4">
+                        <label for="seed_wg_schuhe">Warengruppe für Schuhe</label>
+                        <select class="custom-select" id="seed_wg_schuhe" name="seed_wg_schuhe" required>
+                            <option value="0">— wählen —</option>
+                            {foreach from=$warengruppen item=wg}
+                            <option value="{$wg->kWarengruppe|intval}">{$wg->cName|escape:'html'}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                    <div class="col-sm-4">
+                        <label for="seed_wg_bindungen">Warengruppe für Bindungen</label>
+                        <select class="custom-select" id="seed_wg_bindungen" name="seed_wg_bindungen" required>
+                            <option value="0">— wählen —</option>
+                            {foreach from=$warengruppen item=wg}
+                            <option value="{$wg->kWarengruppe|intval}">{$wg->cName|escape:'html'}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                    <div class="col-sm-auto mt-2 mt-sm-0">
+                        <button type="submit" name="seed_demo" value="1" class="btn btn-secondary btn-block">
+                            <i class="fas fa-download"></i> Demo-Daten laden
+                        </button>
+                    </div>
+                </div>
+                <small class="text-muted d-block mt-2">
+                    Lädt 30 vordefinierte Tabellen (11 Schuhmarken, 19 Bindungsmarken).
+                    Bereits vorhandene Einträge werden übersprungen.
+                    Die Herstellernamen müssen den Herstellern im Shop entsprechen.
+                </small>
+            </form>
+        </div>
+    </div>
 
 {elseif $step === 'detail'}
 <div id="detail-wrapper">

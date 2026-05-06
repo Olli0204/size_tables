@@ -62,7 +62,7 @@ final class SizeTable extends DataModel
         $geschlecht = DataAttribute::create('geschlecht', 'varchar', null, false);
         $geschlechtConfig = new InputConfig();
         $geschlechtConfig->setInputType(InputType::SELECT);
-        $geschlechtConfig->setAllowedValues(['herren' => 'Herren', 'damen' => 'Damen', 'kinder' => 'Kinder']);
+        $geschlechtConfig->setAllowedValues(['unisex' => 'Unisex', 'herren' => 'Herren', 'damen' => 'Damen', 'kinder' => 'Kinder']);
         $geschlecht->setInputConfig($geschlechtConfig);
 
         $inhalt = DataAttribute::create('inhalt', 'text', null, false);

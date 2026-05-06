@@ -2,6 +2,7 @@
 
 namespace Plugin\size_tables;
 
+use JTL\Helpers\Form;
 use JTL\Helpers\Request;
 use JTL\Model\DataModelInterface;
 use JTL\Plugin\PluginInterface;
@@ -48,6 +49,19 @@ class ModelBackendController extends GenericModelController
         );
         $smarty->assign('warengruppen', $warengruppen)
                ->assign('herstellerList', $hersteller);
+
+        if (isset($_POST['seed_demo']) && Form::validateToken()) {
+            $seeder = new DemoSeeder($this->getDB());
+            $result = $seeder->insertAll(
+                (int)($_POST['seed_wg_schuhe']   ?? 0),
+                (int)($_POST['seed_wg_bindungen'] ?? 0)
+            );
+            $smarty->assign('seedResult', $result)
+                   ->assign('models', SizeTable::loadAll($this->getDB(), [], []));
+            $smarty->assign('step', 'overview')->assign('tab', 'overview')
+                   ->assign('action', $this->plugin->getPaths()->getBackendURL());
+            return $this->handle(__DIR__ . '/adminmenu/templates/size_tables.tpl');
+        }
 
         $tab = Request::getVar('action', 'overview');
 
