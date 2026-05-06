@@ -21,8 +21,12 @@ class DemoSeeder
         return $deleted;
     }
 
-    public function insertAll(int $kWarengruppeSchuhe1, int $kWarengruppeSchuhe2, int $kWarengruppeBindungen): array
-    {
+    public function insertAll(
+        int $kWarengruppeSchuhe1,
+        int $kWarengruppeSchuhe2,
+        int $kWarengruppeBindungenHerren,
+        int $kWarengruppeBindungenDamen
+    ): array {
         $result = ['schuhe' => 0, 'bindungen' => 0, 'skipped' => 0];
 
         $wgSchuhe = \implode(',', \array_filter([$kWarengruppeSchuhe1, $kWarengruppeSchuhe2]));
@@ -38,7 +42,11 @@ class DemoSeeder
         }
 
         foreach ($this->getBindingData() as $entry) {
-            $entry['kWarengruppe'] = $kWarengruppeBindungen;
+            $entry['kWarengruppe'] = match ($entry['geschlecht']) {
+                'herren' => (string)$kWarengruppeBindungenHerren,
+                'damen'  => (string)$kWarengruppeBindungenDamen,
+                default  => \implode(',', \array_filter([$kWarengruppeBindungenHerren, $kWarengruppeBindungenDamen])),
+            };
             if ($this->exists($entry['name'], $entry['hersteller'])) {
                 $result['skipped']++;
                 continue;

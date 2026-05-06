@@ -8,7 +8,7 @@
     <MinShopVersion>5.2.4</MinShopVersion>
     <MaxShopVersion>5.7.0</MaxShopVersion>
     <PluginID>size_tables</PluginID>
-    <Version>1.3.2</Version>
+    <Version>1.3.3</Version>
     <CreateDate>2024-02-27</CreateDate>
     <Install>
         <Adminmenu>

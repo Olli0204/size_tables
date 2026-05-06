@@ -36,8 +36,8 @@
             <form method="post" action="{$action}">
                 {$jtl_token}
                 <div class="form-row align-items-end">
-                    <div class="col-sm-3">
-                        <label for="seed_wg_schuhe_1">Warengruppe Schuhe 1</label>
+                    <div class="col-sm-2">
+                        <label for="seed_wg_schuhe_1">Schuhe WG 1</label>
                         <select class="custom-select" id="seed_wg_schuhe_1" name="seed_wg_schuhe_1" required>
                             <option value="0">— wählen —</option>
                             {foreach from=$warengruppen item=wg}
@@ -45,8 +45,8 @@
                             {/foreach}
                         </select>
                     </div>
-                    <div class="col-sm-3">
-                        <label for="seed_wg_schuhe_2">Warengruppe Schuhe 2</label>
+                    <div class="col-sm-2">
+                        <label for="seed_wg_schuhe_2">Schuhe WG 2</label>
                         <select class="custom-select" id="seed_wg_schuhe_2" name="seed_wg_schuhe_2" required>
                             <option value="0">— wählen —</option>
                             {foreach from=$warengruppen item=wg}
@@ -54,9 +54,18 @@
                             {/foreach}
                         </select>
                     </div>
-                    <div class="col-sm-3">
-                        <label for="seed_wg_bindungen">Warengruppe für Bindungen</label>
-                        <select class="custom-select" id="seed_wg_bindungen" name="seed_wg_bindungen" required>
+                    <div class="col-sm-2">
+                        <label for="seed_wg_bindungen_herren">Bindungen WG Herren</label>
+                        <select class="custom-select" id="seed_wg_bindungen_herren" name="seed_wg_bindungen_herren" required>
+                            <option value="0">— wählen —</option>
+                            {foreach from=$warengruppen item=wg}
+                            <option value="{$wg->kWarengruppe|intval}">{$wg->cName|escape:'html'}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                    <div class="col-sm-2">
+                        <label for="seed_wg_bindungen_damen">Bindungen WG Damen</label>
+                        <select class="custom-select" id="seed_wg_bindungen_damen" name="seed_wg_bindungen_damen" required>
                             <option value="0">— wählen —</option>
                             {foreach from=$warengruppen item=wg}
                             <option value="{$wg->kWarengruppe|intval}">{$wg->cName|escape:'html'}</option>
@@ -77,6 +86,7 @@
                 </div>
                 <small class="text-muted d-block mt-2">
                     Lädt 30 vordefinierte Tabellen (11 Schuhmarken, 19 Bindungsmarken).
+                    Herren-Bindungen → WG Herren, Damen-Bindungen → WG Damen, Unisex-Bindungen → beide WGs.
                     Bereits vorhandene Einträge werden übersprungen.
                     Die Herstellernamen müssen den Herstellern im Shop entsprechen.
                 </small>
