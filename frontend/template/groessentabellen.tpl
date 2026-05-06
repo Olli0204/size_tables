@@ -36,17 +36,19 @@
 {if !empty($pageBoots)}
 <h2 class="h4 mt-2 mb-3">Schuhgr&ouml;&szlig;en</h2>
 <div class="accordion mb-5" id="accordion-boots">
+    {assign var='bootIdx' value=0}
     {foreach $pageBoots as $hersteller => $tables}
+    {assign var='bootIdx' value=$bootIdx+1}
     <div class="card">
-        <div class="card-header py-2" id="h-boot-{$hersteller@iteration}">
+        <div class="card-header py-2">
             <button class="btn btn-link font-weight-bold text-dark" type="button"
-                    data-toggle="collapse" data-target="#boot-{$hersteller@iteration}"
-                    aria-expanded="{if $hersteller@first}true{else}false{/if}"
-                    aria-controls="boot-{$hersteller@iteration}">
+                    data-toggle="collapse" data-target="#boot-{$bootIdx}"
+                    aria-expanded="{if $bootIdx === 1}true{else}false{/if}"
+                    aria-controls="boot-{$bootIdx}">
                 {$hersteller|escape:'html'}
             </button>
         </div>
-        <div id="boot-{$hersteller@iteration}" class="collapse{if $hersteller@first} show{/if}" data-parent="#accordion-boots">
+        <div id="boot-{$bootIdx}" class="collapse{if $bootIdx === 1} show{/if}" data-parent="#accordion-boots">
             <div class="card-body">
                 <div class="table-responsive">
                     {foreach $tables as $table}
@@ -84,17 +86,19 @@
     Herstellerangabe &ndash; Werte stimmen nur bei Boots des gleichen Herstellers.
 </p>
 <div class="accordion mb-5" id="accordion-bindings">
+    {assign var='bindIdx' value=0}
     {foreach $pageBindings as $hersteller => $tables}
+    {assign var='bindIdx' value=$bindIdx+1}
     <div class="card">
-        <div class="card-header py-2" id="h-bind-{$hersteller@iteration}">
+        <div class="card-header py-2">
             <button class="btn btn-link font-weight-bold text-dark" type="button"
-                    data-toggle="collapse" data-target="#bind-{$hersteller@iteration}"
-                    aria-expanded="{if $hersteller@first}true{else}false{/if}"
-                    aria-controls="bind-{$hersteller@iteration}">
+                    data-toggle="collapse" data-target="#bind-{$bindIdx}"
+                    aria-expanded="{if $bindIdx === 1}true{else}false{/if}"
+                    aria-controls="bind-{$bindIdx}">
                 {$hersteller|escape:'html'}
             </button>
         </div>
-        <div id="bind-{$hersteller@iteration}" class="collapse{if $hersteller@first} show{/if}" data-parent="#accordion-bindings">
+        <div id="bind-{$bindIdx}" class="collapse{if $bindIdx === 1} show{/if}" data-parent="#accordion-bindings">
             <div class="card-body">
                 {foreach $tables as $table}
                 {if $table.geschlecht === 'herren'}
