@@ -73,7 +73,36 @@ class Bootstrap extends Bootstrapper
 
     public function prepareFrontend(LinkInterface $link, JTLSmarty $smarty): bool
     {
-        return true;
+        $rows = $this->getDB()->query(
+            'SELECT * FROM size_tables_data ORDER BY typ, hersteller, geschlecht',
+            \JTL\DB\ReturnType::ARRAY_OF_OBJECTS
+        );
+
+        $boots    = [];
+        $bindings = [];
+
+        foreach ($rows as $row) {
+            $data = \json_decode($row->inhalt ?? '', true);
+            if (!\is_array($data) || !isset($data['headers'], $data['rows'])) {
+                continue;
+            }
+            $table = [
+                'name'       => $row->name,
+                'geschlecht' => $row->geschlecht,
+                'headers'    => $data['headers'],
+                'rows'       => $data['rows'],
+            ];
+            if ($row->typ === 'boot') {
+                $boots[$row->hersteller][] = $table;
+            } else {
+                $bindings[$row->hersteller][] = $table;
+            }
+        }
+
+        $smarty->assign('pageBoots',    $boots);
+        $smarty->assign('pageBindings', $bindings);
+
+        return false;
     }
 
     public function renderAdminMenuTab(string $tabName, int $menuID, JTLSmarty $smarty): string

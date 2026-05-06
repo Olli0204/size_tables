@@ -8,7 +8,7 @@
     <MinShopVersion>5.2.4</MinShopVersion>
     <MaxShopVersion>5.7.0</MaxShopVersion>
     <PluginID>size_tables</PluginID>
-    <Version>1.3.3</Version>
+    <Version>1.3.4</Version>
     <CreateDate>2024-02-27</CreateDate>
     <Install>
         <Adminmenu>
@@ -48,6 +48,34 @@
             </Settingslink>
             
         </Adminmenu>
+        <FrontendLink>
+            <Link>
+                <Filename>groessentabellen.php</Filename>
+                <Name>Groessentabellen</Name>
+                <Template>groessentabellen.tpl</Template>
+                <VisibleAfterLogin>N</VisibleAfterLogin>
+                <PrintButton>N</PrintButton>
+                <NoFollow>N</NoFollow>
+                <Identifier>sizeTablesOverview</Identifier>
+                <SSL>2</SSL>
+                <LinkLanguage iso="GER">
+                    <Seo>groessentabellen</Seo>
+                    <Name>Groessentabellen</Name>
+                    <Title>Groessentabellen</Title>
+                    <MetaTitle>Groessentabellen</MetaTitle>
+                    <MetaKeywords>Groessentabelle, Schuhgroesse, Bindung</MetaKeywords>
+                    <MetaDescription>Alle Groessentabellen fuer Snowboard-Schuhe und Bindungen</MetaDescription>
+                </LinkLanguage>
+                <LinkLanguage iso="ENG">
+                    <Seo>size-tables</Seo>
+                    <Name>Size Tables</Name>
+                    <Title>Size Tables</Title>
+                    <MetaTitle>Size Tables</MetaTitle>
+                    <MetaKeywords>size table, shoe size, binding</MetaKeywords>
+                    <MetaDescription>All size tables for snowboard boots and bindings</MetaDescription>
+                </LinkLanguage>
+            </Link>
+        </FrontendLink>
         <Locales>
             <Variable>
                 <Name>size_heading</Name>
