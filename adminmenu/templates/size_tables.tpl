@@ -81,6 +81,7 @@
         {$jtl_token}
         <input type="hidden" name="id" value="{$item->getId()|intval}" />
         <input type="hidden" id="inhalt" name="inhalt" value="" />
+        <input type="hidden" id="kWarengruppe-value" name="kWarengruppe" value="{$item->getKWarengruppe()|default:''|escape:'html'}" />
         <div id="inhalt-data" data-inhalt="{$item->getInhalt()|default:''|escape:'html'}" style="display:none;"></div>
 
         <div class="card">
@@ -114,12 +115,12 @@
                 </div>
 
                 <div class="form-group form-row">
-                    <label class="col col-sm-4 col-form-label text-sm-right pt-sm-2" for="kWarengruppe">Warengruppe:</label>
+                    <label class="col col-sm-4 col-form-label text-sm-right pt-sm-2" for="kWarengruppe-select">Warengruppe:</label>
                     <div class="col-sm pl-sm-3 pr-sm-5 order-last order-sm-2">
-                        <select class="custom-select" id="kWarengruppe" name="kWarengruppe[]" multiple size="6">
+                        <select class="custom-select" id="kWarengruppe-select" multiple size="6">
                             {foreach from=$warengruppen item=wg}
                             <option value="{$wg->kWarengruppe|intval}"
-                                {if isset($selectedWarengruppen[$wg->kWarengruppe])} selected{/if}>
+                                {if isset($selectedWarengruppen["{$wg->kWarengruppe|intval}"])} selected{/if}>
                                 {$wg->cName|escape:'html'}
                             </option>
                             {/foreach}
@@ -312,6 +313,14 @@
     document.getElementById('model-detail').addEventListener('submit', function () {
         if (container.querySelector('table')) {
             inhaltField.value = serializeTable();
+        }
+        // Join selected Warengruppen into hidden field
+        var wgSelect = document.getElementById('kWarengruppe-select');
+        var wgHidden = document.getElementById('kWarengruppe-value');
+        if (wgSelect && wgHidden) {
+            var selected = Array.prototype.slice.call(wgSelect.selectedOptions)
+                .map(function (opt) { return opt.value; });
+            wgHidden.value = selected.join(',');
         }
     });
 
