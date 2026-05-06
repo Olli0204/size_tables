@@ -43,7 +43,8 @@ class Bootstrap extends Bootstrapper
         $bindings = [];
 
         foreach ($rows as $row) {
-            if ((int)$row->kWarengruppe !== $kWarengruppe) {
+            $assigned = \array_filter(\array_map('intval', \explode(',', $row->kWarengruppe ?? '')));
+            if (!\in_array($kWarengruppe, $assigned, true)) {
                 continue;
             }
             $data = \json_decode($row->inhalt ?? '', true);

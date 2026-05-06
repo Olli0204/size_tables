@@ -8,6 +8,19 @@ class DemoSeeder
 {
     public function __construct(private readonly DbInterface $db) {}
 
+    public function deleteAll(): int
+    {
+        $deleted = 0;
+        foreach (\array_merge($this->getBootData(), $this->getBindingData()) as $entry) {
+            $row = $this->db->select('size_tables_data', ['name', 'hersteller'], [$entry['name'], $entry['hersteller']]);
+            if ($row !== null && $row !== false) {
+                $this->db->delete('size_tables_data', 'id', (int)$row->id);
+                $deleted++;
+            }
+        }
+        return $deleted;
+    }
+
     public function insertAll(int $kWarengruppeSchuhe, int $kWarengruppeBindungen): array
     {
         $result = ['schuhe' => 0, 'bindungen' => 0, 'skipped' => 0];
@@ -48,7 +61,7 @@ class DemoSeeder
         $obj->hersteller  = $entry['hersteller'];
         $obj->typ         = $entry['typ'];
         $obj->geschlecht  = $entry['geschlecht'];
-        $obj->kWarengruppe = $entry['kWarengruppe'];
+        $obj->kWarengruppe = (string)$entry['kWarengruppe'];
         $obj->inhalt      = \json_encode($entry['inhalt'], \JSON_UNESCAPED_UNICODE);
         $this->db->insert('size_tables_data', $obj);
     }

@@ -27,6 +27,11 @@ class ModelBackendController extends GenericModelController
             $post['inhalt'] = $_POST['inhalt'];
         }
 
+        // Multi-select sends an array — join to comma-separated string.
+        if (isset($_POST['kWarengruppe']) && \is_array($_POST['kWarengruppe'])) {
+            $post['kWarengruppe'] = \implode(',', \array_map('intval', $_POST['kWarengruppe']));
+        }
+
         return parent::updateFromPost($model, $post);
     }
 
@@ -50,17 +55,20 @@ class ModelBackendController extends GenericModelController
         $smarty->assign('warengruppen', $warengruppen)
                ->assign('herstellerList', $hersteller);
 
+        $seeder = new DemoSeeder($this->getDB());
+
         if (isset($_POST['seed_demo']) && Form::validateToken()) {
-            $seeder = new DemoSeeder($this->getDB());
             $result = $seeder->insertAll(
                 (int)($_POST['seed_wg_schuhe']   ?? 0),
                 (int)($_POST['seed_wg_bindungen'] ?? 0)
             );
-            $smarty->assign('seedResult', $result)
-                   ->assign('models', SizeTable::loadAll($this->getDB(), [], []));
-            $smarty->assign('step', 'overview')->assign('tab', 'overview')
-                   ->assign('action', $this->plugin->getPaths()->getBackendURL());
-            return $this->handle(__DIR__ . '/adminmenu/templates/size_tables.tpl');
+            $smarty->assign('seedResult', $result);
+            return $this->renderOverview($smarty);
+        }
+
+        if (isset($_POST['delete_demo']) && Form::validateToken()) {
+            $smarty->assign('deleteResult', $seeder->deleteAll());
+            return $this->renderOverview($smarty);
         }
 
         $tab = Request::getVar('action', 'overview');
@@ -69,7 +77,12 @@ class ModelBackendController extends GenericModelController
             $smarty->assign('models', SizeTable::loadAll($this->getDB(), [], []));
         } else {
             $item = SizeTable::loadByAttributes(['id' => Request::getInt('id')], $this->getDB());
+            $selectedWg = [];
+            foreach (\array_filter(\array_map('intval', \explode(',', $item->getKWarengruppe() ?? ''))) as $id) {
+                $selectedWg[$id] = true;
+            }
             $smarty->assign('item', $item)
+                   ->assign('selectedWarengruppen', $selectedWg)
                    ->assign('defaultTabbertab', $this->menuID);
         }
 
@@ -84,5 +97,14 @@ class ModelBackendController extends GenericModelController
         }
 
         return $response;
+    }
+
+    private function renderOverview(JTLSmarty $smarty): ResponseInterface
+    {
+        $smarty->assign('models', SizeTable::loadAll($this->getDB(), [], []))
+               ->assign('step', 'overview')
+               ->assign('tab', 'overview')
+               ->assign('action', $this->plugin->getPaths()->getBackendURL());
+        return $this->handle(__DIR__ . '/adminmenu/templates/size_tables.tpl');
     }
 }

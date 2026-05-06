@@ -7,6 +7,12 @@
         {if $seedResult.skipped > 0}, <strong>{$seedResult.skipped}</strong> bereits vorhanden (übersprungen){/if}.
     </div>
     {/if}
+    {if isset($deleteResult)}
+    <div class="alert alert-warning">
+        <i class="fas fa-trash-alt"></i>
+        <strong>{$deleteResult}</strong> Demo-Einträge gelöscht.
+    </div>
+    {/if}
 
     {include file='tpl_inc/model_list.tpl'
         items=$models
@@ -51,6 +57,12 @@
                     <div class="col-sm-auto mt-2 mt-sm-0">
                         <button type="submit" name="seed_demo" value="1" class="btn btn-secondary btn-block">
                             <i class="fas fa-download"></i> Demo-Daten laden
+                        </button>
+                    </div>
+                    <div class="col-sm-auto mt-2 mt-sm-0">
+                        <button type="submit" name="delete_demo" value="1" class="btn btn-outline-danger btn-block"
+                                onclick="return confirm('Alle 30 Demo-Einträge wirklich löschen?')">
+                            <i class="fas fa-trash-alt"></i> Demo-Daten löschen
                         </button>
                     </div>
                 </div>
@@ -101,18 +113,18 @@
                     </div>
                 </div>
 
-                <div class="form-group form-row align-items-center">
-                    <label class="col col-sm-4 col-form-label text-sm-right" for="kWarengruppe">Warengruppe:</label>
+                <div class="form-group form-row">
+                    <label class="col col-sm-4 col-form-label text-sm-right pt-sm-2" for="kWarengruppe">Warengruppe:</label>
                     <div class="col-sm pl-sm-3 pr-sm-5 order-last order-sm-2">
-                        <select class="custom-select" id="kWarengruppe" name="kWarengruppe" required>
-                            <option value="0">— Warengruppe wählen —</option>
+                        <select class="custom-select" id="kWarengruppe" name="kWarengruppe[]" multiple size="6">
                             {foreach from=$warengruppen item=wg}
                             <option value="{$wg->kWarengruppe|intval}"
-                                {if $item->getKWarengruppe() == $wg->kWarengruppe} selected{/if}>
+                                {if isset($selectedWarengruppen[$wg->kWarengruppe])} selected{/if}>
                                 {$wg->cName|escape:'html'}
                             </option>
                             {/foreach}
                         </select>
+                        <small class="text-muted">Strg/Cmd + Klick für Mehrfachauswahl</small>
                     </div>
                 </div>
 

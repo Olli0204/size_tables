@@ -24,9 +24,9 @@ use JTL\Plugin\Admin\InputType;
  * @property string $geschlecht
  * @method   string getGeschlecht()
  * @method   void   setGeschlecht(string $value)
- * @property int    $kWarengruppe
- * @method   int    getKWarengruppe()
- * @method   void   setKWarengruppe(int $value)
+ * @property string $kWarengruppe
+ * @method   string getKWarengruppe()
+ * @method   void   setKWarengruppe(string $value)
  * @property string $inhalt
  * @method   string getInhalt()
  * @method   void   setInhalt(string $value)
@@ -74,7 +74,7 @@ final class SizeTable extends DataModel
         $geschlecht->getInputConfig()->setHidden(true);
         $inhalt->getInputConfig()->setHidden(true);
 
-        $kWarengruppe = DataAttribute::create('kWarengruppe', 'int', null, false);
+        $kWarengruppe = DataAttribute::create('kWarengruppe', 'varchar', null, false);
         $kWarengruppe->getInputConfig()->setHidden(true);
 
         $attributes = [
