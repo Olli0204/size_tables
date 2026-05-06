@@ -72,6 +72,13 @@ class ModelBackendController extends GenericModelController
         $tab    = Request::getVar('action', 'overview');
         $cSuche = \trim(Request::postVar('cSuche') ?? Request::getVar('cSuche') ?? '');
 
+        // After save-and-continue the PRG redirect drops ?action=detail from the URL.
+        // GenericModelController::save() stores the target step in $_SESSION['step'],
+        // so we read it here before handle() clears it.
+        if ($tab === 'overview' && ($_SESSION['step'] ?? '') === 'detail') {
+            $tab = 'detail';
+        }
+
         if ($tab === 'overview' && $cSuche !== '') {
             return $this->renderSearch($smarty, $cSuche);
         }
@@ -79,10 +86,11 @@ class ModelBackendController extends GenericModelController
         if ($tab === 'overview') {
             $smarty->assign('models', SizeTable::loadAll($this->getDB(), [], []));
         } else {
-            $item = SizeTable::loadByAttributes(['id' => Request::getInt('id')], $this->getDB());
+            $itemId = Request::getInt('id') ?: (int)($_SESSION['modelid'] ?? 0);
+            $item   = SizeTable::loadByAttributes(['id' => $itemId], $this->getDB());
             $selectedWg = [];
-            foreach (\array_filter(\explode(',', $item->getKWarengruppe() ?? '')) as $id) {
-                $selectedWg[(string)(int)$id] = true;
+            foreach (\array_filter(\explode(',', $item->getKWarengruppe() ?? '')) as $wgId) {
+                $selectedWg[(string)(int)$wgId] = true;
             }
             $smarty->assign('item', $item)
                    ->assign('selectedWarengruppen', $selectedWg)
