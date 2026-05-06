@@ -21,12 +21,14 @@ class DemoSeeder
         return $deleted;
     }
 
-    public function insertAll(int $kWarengruppeSchuhe, int $kWarengruppeBindungen): array
+    public function insertAll(int $kWarengruppeSchuhe1, int $kWarengruppeSchuhe2, int $kWarengruppeBindungen): array
     {
         $result = ['schuhe' => 0, 'bindungen' => 0, 'skipped' => 0];
 
+        $wgSchuhe = \implode(',', \array_filter([$kWarengruppeSchuhe1, $kWarengruppeSchuhe2]));
+
         foreach ($this->getBootData() as $entry) {
-            $entry['kWarengruppe'] = $kWarengruppeSchuhe;
+            $entry['kWarengruppe'] = $wgSchuhe;
             if ($this->exists($entry['name'], $entry['hersteller'])) {
                 $result['skipped']++;
                 continue;

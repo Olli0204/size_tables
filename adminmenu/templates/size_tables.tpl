@@ -36,16 +36,25 @@
             <form method="post" action="{$action}">
                 {$jtl_token}
                 <div class="form-row align-items-end">
-                    <div class="col-sm-4">
-                        <label for="seed_wg_schuhe">Warengruppe für Schuhe</label>
-                        <select class="custom-select" id="seed_wg_schuhe" name="seed_wg_schuhe" required>
+                    <div class="col-sm-3">
+                        <label for="seed_wg_schuhe_1">Warengruppe Schuhe 1</label>
+                        <select class="custom-select" id="seed_wg_schuhe_1" name="seed_wg_schuhe_1" required>
                             <option value="0">— wählen —</option>
                             {foreach from=$warengruppen item=wg}
                             <option value="{$wg->kWarengruppe|intval}">{$wg->cName|escape:'html'}</option>
                             {/foreach}
                         </select>
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-3">
+                        <label for="seed_wg_schuhe_2">Warengruppe Schuhe 2</label>
+                        <select class="custom-select" id="seed_wg_schuhe_2" name="seed_wg_schuhe_2" required>
+                            <option value="0">— wählen —</option>
+                            {foreach from=$warengruppen item=wg}
+                            <option value="{$wg->kWarengruppe|intval}">{$wg->cName|escape:'html'}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                    <div class="col-sm-3">
                         <label for="seed_wg_bindungen">Warengruppe für Bindungen</label>
                         <select class="custom-select" id="seed_wg_bindungen" name="seed_wg_bindungen" required>
                             <option value="0">— wählen —</option>
