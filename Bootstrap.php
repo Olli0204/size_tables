@@ -2,10 +2,7 @@
 
 namespace Plugin\size_tables;
 
-use JTL\Alert\Alert;
 use JTL\Events\Dispatcher;
-use JTL\Helpers\Form;
-use JTL\Helpers\Request;
 use JTL\Link\LinkInterface;
 use JTL\Plugin\Bootstrapper;
 use JTL\Shop;
@@ -36,16 +33,19 @@ class Bootstrap extends Bootstrapper
             return;
         }
 
-        $config        = $this->getPlugin()->getConfig();
-        $shoeGroups    = \array_map('intval', (array)($config->getValue('size_tables_values') ?: []));
-        $bindingGroups = \array_map('intval', (array)($config->getValue('size_tables_values_bindings') ?: []));
-        $kWarengruppe  = (int)($artikel->kWarengruppe ?? 0);
+        $kWarengruppe = (int)($artikel->kWarengruppe ?? 0);
+        if ($kWarengruppe === 0) {
+            return;
+        }
 
         $rows     = $this->getDB()->selectAll('size_tables_data', 'hersteller', $artikel->cHersteller);
         $boots    = [];
         $bindings = [];
 
         foreach ($rows as $row) {
+            if ((int)$row->kWarengruppe !== $kWarengruppe) {
+                continue;
+            }
             $data = \json_decode($row->inhalt ?? '', true);
             if (!\is_array($data) || !isset($data['headers'], $data['rows'])) {
                 continue;
@@ -64,8 +64,8 @@ class Bootstrap extends Bootstrapper
             }
         }
 
-        $smarty->assign('showSizeBtnShoes',    !empty($boots)    && \in_array($kWarengruppe, $shoeGroups, true));
-        $smarty->assign('showSizeBtnBindings', !empty($bindings) && \in_array($kWarengruppe, $bindingGroups, true));
+        $smarty->assign('showSizeBtnShoes',    !empty($boots));
+        $smarty->assign('showSizeBtnBindings', !empty($bindings));
         $smarty->assign('sizeTablesBoots',     $boots);
         $smarty->assign('sizeTablesBindungen', $bindings);
     }

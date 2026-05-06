@@ -44,7 +44,19 @@ class ModelBackendController extends GenericModelController
             $smarty->assign('models', SizeTable::loadAll($this->getDB(), [], []));
         } else {
             $item = SizeTable::loadByAttributes(['id' => Request::getInt('id')], $this->getDB());
+
+            $warengruppen = $this->getDB()->query(
+                'SELECT kWarengruppe, cName FROM twarengruppe ORDER BY cName',
+                \JTL\DB\ReturnType::ARRAY_OF_OBJECTS
+            );
+            $hersteller = $this->getDB()->query(
+                'SELECT kHersteller, cName FROM thersteller ORDER BY cName',
+                \JTL\DB\ReturnType::ARRAY_OF_OBJECTS
+            );
+
             $smarty->assign('item', $item)
+                   ->assign('warengruppen', $warengruppen)
+                   ->assign('herstellerList', $hersteller)
                    ->assign('defaultTabbertab', $this->menuID);
         }
 

@@ -38,8 +38,30 @@
                 <div class="form-group form-row align-items-center">
                     <label class="col col-sm-4 col-form-label text-sm-right" for="hersteller">Hersteller:</label>
                     <div class="col-sm pl-sm-3 pr-sm-5 order-last order-sm-2">
-                        <input type="text" class="form-control" id="hersteller" name="hersteller"
-                               value="{$item->getHersteller()|default:''}" required>
+                        <select class="custom-select" id="hersteller" name="hersteller" required>
+                            <option value="">— Hersteller wählen —</option>
+                            {foreach from=$herstellerList item=h}
+                            <option value="{$h->cName|escape:'html'}"
+                                {if $item->getHersteller() === $h->cName} selected{/if}>
+                                {$h->cName|escape:'html'}
+                            </option>
+                            {/foreach}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group form-row align-items-center">
+                    <label class="col col-sm-4 col-form-label text-sm-right" for="kWarengruppe">Warengruppe:</label>
+                    <div class="col-sm pl-sm-3 pr-sm-5 order-last order-sm-2">
+                        <select class="custom-select" id="kWarengruppe" name="kWarengruppe" required>
+                            <option value="0">— Warengruppe wählen —</option>
+                            {foreach from=$warengruppen item=wg}
+                            <option value="{$wg->kWarengruppe|intval}"
+                                {if $item->getKWarengruppe() == $wg->kWarengruppe} selected{/if}>
+                                {$wg->cName|escape:'html'}
+                            </option>
+                            {/foreach}
+                        </select>
                     </div>
                 </div>
 
