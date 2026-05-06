@@ -26,22 +26,16 @@
     text-transform: uppercase;
     letter-spacing: 0.05em;
 }
-.badge-herren  { background: #d0e8ff; color: #1a5a99; }
-.badge-damen   { background: #ffd6e8; color: #99195a; }
-.badge-unisex  { background: #e8e8e8; color: #555; }
-.size-guide-warning {
-    color: #c00;
-    font-size: 0.85rem;
-    margin-top: 12px;
-}
+.badge-herren { background: #d0e8ff; color: #1a5a99; }
+.badge-damen  { background: #ffd6e8; color: #99195a; }
+.badge-unisex { background: #e8e8e8; color: #555; }
 </style>
 
-<h1 class="page-heading mb-2">Gr&ouml;&szlig;entabellen</h1>
-<p class="text-muted mb-4">Alle Gr&ouml;&szlig;entabellen f&uuml;r Snowboard-Schuhe und Bindungen auf einen Blick.</p>
+<div class="container">
 
 {if !empty($pageBoots)}
-<h2 class="h4 mt-4 mb-3"><i class="fas fa-shoe-prints"></i> Schuhgr&ouml;&szlig;en</h2>
-<div class="accordion" id="accordion-boots">
+<h2 class="h4 mt-2 mb-3">Schuhgr&ouml;&szlig;en</h2>
+<div class="accordion mb-5" id="accordion-boots">
     {foreach $pageBoots as $hersteller => $tables}
     {assign var='bid' value="boot-`$hersteller@iteration`"}
     <div class="card">
@@ -85,12 +79,12 @@
 {/if}
 
 {if !empty($pageBindings)}
-<h2 class="h4 mt-5 mb-3"><i class="fas fa-link"></i> Bindungsgr&ouml;&szlig;en</h2>
+<h2 class="h4 mb-2">Bindungsgr&ouml;&szlig;en</h2>
 <p class="text-muted small mb-3">
     <i class="fas fa-exclamation-triangle text-danger"></i>
     Herstellerangabe &ndash; Werte stimmen nur bei Boots des gleichen Herstellers.
 </p>
-<div class="accordion" id="accordion-bindings">
+<div class="accordion mb-5" id="accordion-bindings">
     {foreach $pageBindings as $hersteller => $tables}
     {assign var='did' value="bind-`$hersteller@iteration`"}
     <div class="card">
@@ -145,3 +139,5 @@
     <i class="fal fa-info-circle"></i> Es sind noch keine Gr&ouml;&szlig;entabellen vorhanden.
 </div>
 {/if}
+
+</div>{* /container *}
