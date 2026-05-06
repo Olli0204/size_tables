@@ -37,17 +37,16 @@
 <h2 class="h4 mt-2 mb-3">Schuhgr&ouml;&szlig;en</h2>
 <div class="accordion mb-5" id="accordion-boots">
     {foreach $pageBoots as $hersteller => $tables}
-    {assign var='bid' value="boot-`$hersteller@iteration`"}
     <div class="card">
-        <div class="card-header py-2" id="h-{$bid}">
+        <div class="card-header py-2" id="h-boot-{$hersteller@iteration}">
             <button class="btn btn-link font-weight-bold text-dark" type="button"
-                    data-toggle="collapse" data-target="#{$bid}"
+                    data-toggle="collapse" data-target="#boot-{$hersteller@iteration}"
                     aria-expanded="{if $hersteller@first}true{else}false{/if}"
-                    aria-controls="{$bid}">
+                    aria-controls="boot-{$hersteller@iteration}">
                 {$hersteller|escape:'html'}
             </button>
         </div>
-        <div id="{$bid}" class="collapse{if $hersteller@first} show{/if}" data-parent="#accordion-boots">
+        <div id="boot-{$hersteller@iteration}" class="collapse{if $hersteller@first} show{/if}" data-parent="#accordion-boots">
             <div class="card-body">
                 <div class="table-responsive">
                     {foreach $tables as $table}
@@ -86,17 +85,16 @@
 </p>
 <div class="accordion mb-5" id="accordion-bindings">
     {foreach $pageBindings as $hersteller => $tables}
-    {assign var='did' value="bind-`$hersteller@iteration`"}
     <div class="card">
-        <div class="card-header py-2" id="h-{$did}">
+        <div class="card-header py-2" id="h-bind-{$hersteller@iteration}">
             <button class="btn btn-link font-weight-bold text-dark" type="button"
-                    data-toggle="collapse" data-target="#{$did}"
+                    data-toggle="collapse" data-target="#bind-{$hersteller@iteration}"
                     aria-expanded="{if $hersteller@first}true{else}false{/if}"
-                    aria-controls="{$did}">
+                    aria-controls="bind-{$hersteller@iteration}">
                 {$hersteller|escape:'html'}
             </button>
         </div>
-        <div id="{$did}" class="collapse{if $hersteller@first} show{/if}" data-parent="#accordion-bindings">
+        <div id="bind-{$hersteller@iteration}" class="collapse{if $hersteller@first} show{/if}" data-parent="#accordion-bindings">
             <div class="card-body">
                 {foreach $tables as $table}
                 {if $table.geschlecht === 'herren'}
