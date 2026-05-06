@@ -5,6 +5,7 @@ namespace Plugin\size_tables;
 use JTL\Helpers\Form;
 use JTL\Helpers\Request;
 use JTL\Model\DataModelInterface;
+use JTL\Pagination\Pagination;
 use JTL\Plugin\PluginInterface;
 use JTL\Router\Controller\Backend\GenericModelController;
 use JTL\Shop;
@@ -68,7 +69,12 @@ class ModelBackendController extends GenericModelController
             return $this->renderOverview($smarty);
         }
 
-        $tab = Request::getVar('action', 'overview');
+        $tab    = Request::getVar('action', 'overview');
+        $cSuche = \trim(Request::postVar('cSuche') ?? Request::getVar('cSuche') ?? '');
+
+        if ($tab === 'overview' && $cSuche !== '') {
+            return $this->renderSearch($smarty, $cSuche);
+        }
 
         if ($tab === 'overview') {
             $smarty->assign('models', SizeTable::loadAll($this->getDB(), [], []));
@@ -103,5 +109,33 @@ class ModelBackendController extends GenericModelController
                ->assign('tab', 'overview')
                ->assign('action', $this->plugin->getPaths()->getBackendURL());
         return $this->handle(__DIR__ . '/adminmenu/templates/size_tables.tpl');
+    }
+
+    private function renderSearch(JTLSmarty $smarty, string $cSuche): ResponseInterface
+    {
+        $term    = \mb_strtolower($cSuche);
+        $all     = SizeTable::loadAll($this->getDB(), [], []);
+        $filtered = $all->filter(static function (SizeTable $item) use ($term): bool {
+            return \str_contains(\mb_strtolower($item->getName() ?? ''), $term)
+                || \str_contains(\mb_strtolower($item->getHersteller() ?? ''), $term);
+        })->values();
+
+        $this->setMessages();
+
+        $tpl        = __DIR__ . '/adminmenu/templates/size_tables.tpl';
+        $pagination = (new Pagination(\pathinfo($tpl, \PATHINFO_FILENAME)))
+            ->setItemCount($filtered->count())
+            ->assemble();
+
+        return $smarty
+            ->assign('step', 'overview')
+            ->assign('tab', 'overview')
+            ->assign('item', new SizeTable($this->getDB()))
+            ->assign('models', $filtered->forPage($pagination->getPage() + 1, $pagination->getItemsPerPage()))
+            ->assign('action', $this->plugin->getPaths()->getBackendURL())
+            ->assign('pagination', $pagination)
+            ->assign('searchQuery', $cSuche)
+            ->assign('childModel', null)
+            ->getResponse($tpl);
     }
 }

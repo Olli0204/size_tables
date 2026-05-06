@@ -22,6 +22,7 @@
         select=true
         edit=true
         search=true
+        searchQuery=$searchQuery
         delete=true}
     <style>
     #modelform table tbody td:nth-child(3) { text-transform: capitalize; }
