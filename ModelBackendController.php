@@ -54,8 +54,9 @@ class ModelBackendController extends GenericModelController
 
         if (isset($_POST['seed_demo']) && Form::validateToken()) {
             $result = $seeder->insertAll(
-                (int)($_POST['seed_wg_schuhe']   ?? 0),
-                (int)($_POST['seed_wg_bindungen'] ?? 0)
+                (int)($_POST['seed_wg_schuhe_1']  ?? 0),
+                (int)($_POST['seed_wg_schuhe_2']  ?? 0),
+                (int)($_POST['seed_wg_bindungen']  ?? 0)
             );
             $smarty->assign('seedResult', $result);
             return $this->renderOverview($smarty);
