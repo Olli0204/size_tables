@@ -90,12 +90,16 @@ Die Seite `/groessentabellen` zeigt alle angelegten Tabellen in zwei Bootstrap-A
 
 | Plugin-Version | JTL-Shop      |
 |----------------|---------------|
+| 1.3.6          | 5.2.4 – 5.8.0 |
 | 1.3.5          | 5.2.4 – 5.8.0 |
 | 1.3.4          | 5.2.4 – 5.7.0 |
 
 ---
 
 ## Changelog
+
+### 1.3.6
+- Die drei Aktiv-Schalter sind wieder Checkboxen statt Ja/Nein-Dropdowns. Migration wandelt gespeicherte `Y`/`N` in `on`/leer um; die Templates lesen die Schalter jetzt als Boolean aus dem Bootstrap.
 
 ### 1.3.5
 - Kompatibilität mit JTL-Shop 5.8.0 geprüft (DataModel, GenericModelController, Hook 140, Template-Erweiterung von `productdetails/details.tpl`, Frontend-Link, Migrationen und alle Templates unter Smarty 5.7), MaxShopVersion auf 5.8.0 angehoben

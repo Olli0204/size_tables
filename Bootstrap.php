@@ -23,6 +23,12 @@ class Bootstrap extends Bootstrapper
     {
         $smarty  = Shop::Smarty();
         $artikel = $smarty->getTemplateVars('Artikel');
+        $config  = $this->getPlugin()->getConfig();
+
+        // Checkbox-Einstellungen: JTL speichert 'on' (angehakt) bzw. '' (abgewaehlt); 'Y' stammt aus den Selectboxen bis 1.3.5
+        $smarty->assign('sizeTablesActive',       $this->isOn($config->getValue('size_tables_active')));
+        $smarty->assign('sizeTablesMobileActive', $this->isOn($config->getValue('size_tables_mobile_active')));
+        $smarty->assign('sizeTablesNameActive',   $this->isOn($config->getValue('size_tables_name_active')));
 
         $smarty->assign('showSizeBtnShoes',    false);
         $smarty->assign('showSizeBtnBindings', false);
@@ -69,6 +75,11 @@ class Bootstrap extends Bootstrapper
         $smarty->assign('showSizeBtnBindings', !empty($bindings));
         $smarty->assign('sizeTablesBoots',     $boots);
         $smarty->assign('sizeTablesBindungen', $bindings);
+    }
+
+    private function isOn(mixed $value): bool
+    {
+        return \in_array((string)$value, ['on', 'Y'], true);
     }
 
     public function prepareFrontend(LinkInterface $link, JTLSmarty $smarty): bool
